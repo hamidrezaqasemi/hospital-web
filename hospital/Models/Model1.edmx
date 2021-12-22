@@ -1,0 +1,338 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="hamid2090_idealsModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="tbl_Doctors">
+          <Key>
+            <PropertyRef Name="pkID" />
+          </Key>
+          <Property Name="pkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Family" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="fkSkill" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_Patient">
+          <Key>
+            <PropertyRef Name="pkID" />
+          </Key>
+          <Property Name="pkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Family" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Mobile" Type="char" MaxLength="11" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_Skills">
+          <Key>
+            <PropertyRef Name="pkID" />
+          </Key>
+          <Property Name="pkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Skill" Type="nvarchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="tbl_Visit">
+          <Key>
+            <PropertyRef Name="pkID" />
+          </Key>
+          <Property Name="pkID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fkDocID" Type="int" Nullable="false" />
+          <Property Name="SDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+          <Property Name="fkPID" Type="int" />
+          <Property Name="fkVTID" Type="int" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'hamid2090_ideals.dbo.View_Visit' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="View_Visit">
+          <Key>
+            <PropertyRef Name="pkID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Family" />
+            <PropertyRef Name="fkDocID" />
+            <PropertyRef Name="SDate" />
+          </Key>
+          <Property Name="pkID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Family" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="fkDocID" Type="int" Nullable="false" />
+          <Property Name="SDate" Type="datetime" Nullable="false" />
+          <Property Name="EDate" Type="datetime" />
+          <Property Name="fkPID" Type="int" />
+          <Property Name="fkVTID" Type="int" />
+          <Property Name="PDate" Type="nvarchar" MaxLength="10" />
+          <Property Name="PTime" Type="varchar" MaxLength="8" />
+        </EntityType>
+        <Association Name="FK_tbl_Doctors_tbl_Skills">
+          <End Role="tbl_Skills" Type="Self.tbl_Skills" Multiplicity="1" />
+          <End Role="tbl_Doctors" Type="Self.tbl_Doctors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Skills">
+              <PropertyRef Name="pkID" />
+            </Principal>
+            <Dependent Role="tbl_Doctors">
+              <PropertyRef Name="fkSkill" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_Visit_tbl_Doctors1">
+          <End Role="tbl_Doctors" Type="Self.tbl_Doctors" Multiplicity="1" />
+          <End Role="tbl_Visit" Type="Self.tbl_Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Doctors">
+              <PropertyRef Name="pkID" />
+            </Principal>
+            <Dependent Role="tbl_Visit">
+              <PropertyRef Name="fkDocID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_tbl_Visit_tbl_Patient1">
+          <End Role="tbl_Patient" Type="Self.tbl_Patient" Multiplicity="0..1" />
+          <End Role="tbl_Visit" Type="Self.tbl_Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Patient">
+              <PropertyRef Name="pkID" />
+            </Principal>
+            <Dependent Role="tbl_Visit">
+              <PropertyRef Name="fkPID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="hamid2090_idealsModelStoreContainer">
+          <EntitySet Name="tbl_Doctors" EntityType="Self.tbl_Doctors" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Patient" EntityType="Self.tbl_Patient" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Skills" EntityType="Self.tbl_Skills" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="tbl_Visit" EntityType="Self.tbl_Visit" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="View_Visit" EntityType="Self.View_Visit" store:Type="Views" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [View_Visit].[pkID] AS [pkID], 
+    [View_Visit].[Name] AS [Name], 
+    [View_Visit].[Family] AS [Family], 
+    [View_Visit].[fkDocID] AS [fkDocID], 
+    [View_Visit].[SDate] AS [SDate], 
+    [View_Visit].[EDate] AS [EDate], 
+    [View_Visit].[fkPID] AS [fkPID], 
+    [View_Visit].[fkVTID] AS [fkVTID], 
+    [View_Visit].[PDate] AS [PDate], 
+    [View_Visit].[PTime] AS [PTime]
+    FROM [dbo].[View_Visit] AS [View_Visit]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_tbl_Doctors_tbl_Skills" Association="Self.FK_tbl_Doctors_tbl_Skills">
+            <End Role="tbl_Skills" EntitySet="tbl_Skills" />
+            <End Role="tbl_Doctors" EntitySet="tbl_Doctors" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Visit_tbl_Doctors1" Association="Self.FK_tbl_Visit_tbl_Doctors1">
+            <End Role="tbl_Doctors" EntitySet="tbl_Doctors" />
+            <End Role="tbl_Visit" EntitySet="tbl_Visit" />
+          </AssociationSet>
+          <AssociationSet Name="FK_tbl_Visit_tbl_Patient1" Association="Self.FK_tbl_Visit_tbl_Patient1">
+            <End Role="tbl_Patient" EntitySet="tbl_Patient" />
+            <End Role="tbl_Visit" EntitySet="tbl_Visit" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="hospitalModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="tbl_Doctors">
+          <Key>
+            <PropertyRef Name="pkID" />
+          </Key>
+          <Property Name="pkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Family" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="fkSkill" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="tbl_Skills" Relationship="Self.FK_tbl_Doctors_tbl_Skills" FromRole="tbl_Doctors" ToRole="tbl_Skills" />
+          <NavigationProperty Name="tbl_Visit" Relationship="hospitalModel.FK_tbl_Visit_tbl_Doctors1" FromRole="tbl_Doctors" ToRole="tbl_Visit" />
+        </EntityType>
+        <EntityType Name="tbl_Skills">
+          <Key>
+            <PropertyRef Name="pkID" />
+          </Key>
+          <Property Name="pkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Skill" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="tbl_Doctors" Relationship="Self.FK_tbl_Doctors_tbl_Skills" FromRole="tbl_Skills" ToRole="tbl_Doctors" />
+        </EntityType>
+        <Association Name="FK_tbl_Doctors_tbl_Skills">
+          <End Role="tbl_Skills" Type="Self.tbl_Skills" Multiplicity="1" />
+          <End Role="tbl_Doctors" Type="Self.tbl_Doctors" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Skills">
+              <PropertyRef Name="pkID" />
+            </Principal>
+            <Dependent Role="tbl_Doctors">
+              <PropertyRef Name="fkSkill" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="hdata" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="tbl_Doctors" EntityType="Self.tbl_Doctors" />
+          <EntitySet Name="tbl_Skills" EntityType="Self.tbl_Skills" />
+          <AssociationSet Name="FK_tbl_Doctors_tbl_Skills" Association="Self.FK_tbl_Doctors_tbl_Skills">
+            <End Role="tbl_Skills" EntitySet="tbl_Skills" />
+            <End Role="tbl_Doctors" EntitySet="tbl_Doctors" />
+          </AssociationSet>
+          <EntitySet Name="tbl_Visit" EntityType="hospitalModel.tbl_Visit" />
+          <AssociationSet Name="FK_tbl_Visit_tbl_Doctors1" Association="hospitalModel.FK_tbl_Visit_tbl_Doctors1">
+            <End Role="tbl_Doctors" EntitySet="tbl_Doctors" />
+            <End Role="tbl_Visit" EntitySet="tbl_Visit" />
+          </AssociationSet>
+          <EntitySet Name="View_Visit" EntityType="hospitalModel.View_Visit" />
+          <EntitySet Name="tbl_Patient" EntityType="hospitalModel.tbl_Patient" />
+          <AssociationSet Name="FK_tbl_Visit_tbl_Patient1" Association="hospitalModel.FK_tbl_Visit_tbl_Patient1">
+            <End Role="tbl_Patient" EntitySet="tbl_Patient" />
+            <End Role="tbl_Visit" EntitySet="tbl_Visit" />
+          </AssociationSet>
+          </EntityContainer>
+        <EntityType Name="tbl_Visit">
+          <Key>
+            <PropertyRef Name="pkID" />
+          </Key>
+          <Property Name="pkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fkDocID" Type="Int32" Nullable="false" />
+          <Property Name="SDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <Property Name="fkPID" Type="Int32" />
+          <Property Name="fkVTID" Type="Int32" />
+          <NavigationProperty Name="tbl_Doctors" Relationship="hospitalModel.FK_tbl_Visit_tbl_Doctors1" FromRole="tbl_Visit" ToRole="tbl_Doctors" />
+          <NavigationProperty Name="tbl_Patient" Relationship="hospitalModel.FK_tbl_Visit_tbl_Patient1" FromRole="tbl_Visit" ToRole="tbl_Patient" />
+        </EntityType>
+        <Association Name="FK_tbl_Visit_tbl_Doctors1">
+          <End Type="hospitalModel.tbl_Doctors" Role="tbl_Doctors" Multiplicity="1" />
+          <End Type="hospitalModel.tbl_Visit" Role="tbl_Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Doctors">
+              <PropertyRef Name="pkID" />
+            </Principal>
+            <Dependent Role="tbl_Visit">
+              <PropertyRef Name="fkDocID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="View_Visit">
+          <Key>
+            <PropertyRef Name="pkID" />
+            <PropertyRef Name="Name" />
+            <PropertyRef Name="Family" />
+            <PropertyRef Name="fkDocID" />
+            <PropertyRef Name="SDate" />
+          </Key>
+          <Property Name="pkID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Family" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="fkDocID" Type="Int32" Nullable="false" />
+          <Property Name="SDate" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="EDate" Type="DateTime" Precision="3" />
+          <Property Name="fkPID" Type="Int32" />
+          <Property Name="fkVTID" Type="Int32" />
+          <Property Name="PDate" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="PTime" Type="String" MaxLength="8" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="tbl_Patient">
+          <Key>
+            <PropertyRef Name="pkID" />
+          </Key>
+          <Property Name="pkID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Family" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Mobile" Type="String" Nullable="false" MaxLength="11" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="tbl_Visit" Relationship="hospitalModel.FK_tbl_Visit_tbl_Patient1" FromRole="tbl_Patient" ToRole="tbl_Visit" />
+        </EntityType>
+        <Association Name="FK_tbl_Visit_tbl_Patient1">
+          <End Type="hospitalModel.tbl_Patient" Role="tbl_Patient" Multiplicity="0..1" />
+          <End Type="hospitalModel.tbl_Visit" Role="tbl_Visit" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tbl_Patient">
+              <PropertyRef Name="pkID" />
+            </Principal>
+            <Dependent Role="tbl_Visit">
+              <PropertyRef Name="fkPID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="hamid2090_idealsModelStoreContainer" CdmEntityContainer="hdata">
+          <EntitySetMapping Name="tbl_Doctors">
+            <EntityTypeMapping TypeName="hospitalModel.tbl_Doctors">
+              <MappingFragment StoreEntitySet="tbl_Doctors">
+                <ScalarProperty Name="pkID" ColumnName="pkID" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Family" ColumnName="Family" />
+                <ScalarProperty Name="fkSkill" ColumnName="fkSkill" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Skills">
+            <EntityTypeMapping TypeName="hospitalModel.tbl_Skills">
+              <MappingFragment StoreEntitySet="tbl_Skills">
+                <ScalarProperty Name="pkID" ColumnName="pkID" />
+                <ScalarProperty Name="Skill" ColumnName="Skill" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Visit">
+            <EntityTypeMapping TypeName="hospitalModel.tbl_Visit">
+              <MappingFragment StoreEntitySet="tbl_Visit">
+                <ScalarProperty Name="fkVTID" ColumnName="fkVTID" />
+                <ScalarProperty Name="fkPID" ColumnName="fkPID" />
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="SDate" ColumnName="SDate" />
+                <ScalarProperty Name="fkDocID" ColumnName="fkDocID" />
+                <ScalarProperty Name="pkID" ColumnName="pkID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="View_Visit">
+            <EntityTypeMapping TypeName="hospitalModel.View_Visit">
+              <MappingFragment StoreEntitySet="View_Visit">
+                <ScalarProperty Name="PTime" ColumnName="PTime" />
+                <ScalarProperty Name="PDate" ColumnName="PDate" />
+                <ScalarProperty Name="fkVTID" ColumnName="fkVTID" />
+                <ScalarProperty Name="fkPID" ColumnName="fkPID" />
+                <ScalarProperty Name="EDate" ColumnName="EDate" />
+                <ScalarProperty Name="SDate" ColumnName="SDate" />
+                <ScalarProperty Name="fkDocID" ColumnName="fkDocID" />
+                <ScalarProperty Name="Family" ColumnName="Family" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="pkID" ColumnName="pkID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tbl_Patient">
+            <EntityTypeMapping TypeName="hospitalModel.tbl_Patient">
+              <MappingFragment StoreEntitySet="tbl_Patient">
+                <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+                <ScalarProperty Name="Family" ColumnName="Family" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="pkID" ColumnName="pkID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
